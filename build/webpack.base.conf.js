@@ -21,7 +21,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@': resolve('src')
+      '@': resolve('src'),
+      //'common': resolve('src/common')  可以为文件配置别名
     }
   },
   module: {
