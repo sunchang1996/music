@@ -1,6 +1,7 @@
 <template>
   <div id="app">
    <MHeader></MHeader>
+   <router-view></router-view>
   </div>
 </template>
 
