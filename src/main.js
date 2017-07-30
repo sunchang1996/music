@@ -5,7 +5,7 @@ import router from './router'
 import fastclick from 'fastclick'
 import '@/common/stylus/index.styl'
 
-fastclick.attach(document.body) // 结果移动端事件的三百毫秒的延迟
+fastclick.attach(document.body) // 结觉移动端事件的三百毫秒的延迟
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
