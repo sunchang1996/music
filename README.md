@@ -32,5 +32,9 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 - jsonp 跨域
 
+- better-scroll 
 ## 里面使用的一些方法
 - encodeURIComponent() 函数可把字符串作为 URI 组件进行编码。
+
+## 
+- 把一些常用的 比较通用的 通常要抽象出来 写在一个js 文件中

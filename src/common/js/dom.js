@@ -1,4 +1,5 @@
-export function hasClass(el, className) {
+
+export function hasClass(el, className) { // 判断是否已经有这个class
   let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
   return reg.test(el.className)
 }
