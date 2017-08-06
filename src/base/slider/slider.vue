@@ -5,6 +5,7 @@
       </slot>
     </div>
     <div class="dots">
+      <span class="dot" v-for="(item, index) in dots" :class="{active: currentPageIndex === index}" :key="index"></span>
     </div>
   </div>
 </template>
@@ -30,29 +31,30 @@ export default {
   data() {
     return {
       children: [],
-      slider: ''
+      slider: '',
+      dots: [],
+      currentPageIndex: 0
     }
   },
   mounted() {
     // 因为浏览器刷新通常要17毫秒
     setTimeout(() => {
       this._setSliderWidth()
+      this._initDots()
       this._initSlider()
+
+      if (this.autoPlay) {
+        this._play()
+      }
     }, 20)
   },
   methods: {
     _setSliderWidth() {
       // 拿到所有的子元素
       this.children = this.$refs.sliderGroup.children
-
       let width = 0
       let sliderWidth = this.$refs.slider.clientWidth
-      console.log(this.children)
-      // this.children.forEach((item) => {
-      //   addClass(item, 'slider-item')
-      //   item.style.width = sliderWidth + 'px'
-      //   width += sliderWidth
-      // })
+      // 拿到每个子元素 算出每个子元素的宽度
       for (let i = 0; i < this.children.length; i++) {
         let child = this.children[i]
         addClass(child, 'slider-item')
@@ -65,6 +67,7 @@ export default {
       this.$refs.sliderGroup.style.width = width + 'px'
     },
     _initSlider() {
+      // 第一个元素是 要操作的DOM元素
       this.slider = new BScroll(this.$refs.slider, {
         scrollX: true,
         scrollY: false,
@@ -74,6 +77,36 @@ export default {
         snapThreshold: 0.3,
         snapSpeed: 400
       })
+
+      // 给this.slidet 添加一个事件
+      this.slider.on('scrollEnd', () => {
+        // 获取当前的index
+        let pageIndex = this.slider.getCurrentPage().pageX
+        if (this.loop) {
+          pageIndex -= 1
+        }
+        this.currentPageIndex = pageIndex
+
+        if (this.autoPlay) {
+          clearTimeout(this.timer)
+          this._play()
+        }
+      })
+    },
+    _initDots() {
+      console.log(this.children.length)
+      this.dots = new Array(this.children.length)
+    },
+    _play() {
+      let pageIndex = this.currentPageIndex + 1
+      if (this.loop) {
+        pageIndex += 1
+      }
+      this.timer = setTimeout(() => {
+        // gotoPage 这个方法是better-scroll 里面提供的 自动轮播
+        // gotoPage(x方向，y方向，轮播间隔)
+        this.slider.goToPage(pageIndex, 0, 400)
+      }, this.interval)
     }
   }
 }
