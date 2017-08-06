@@ -29,3 +29,8 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 - fastclick   解决移动端300毫秒延迟的问题
 
 - babel-polyfill 对ES6 的API进行转义
+
+- jsonp 跨域
+
+## 里面使用的一些方法
+- encodeURIComponent() 函数可把字符串作为 URI 组件进行编码。

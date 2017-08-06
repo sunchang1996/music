@@ -1,3 +1,4 @@
+// 封装JSONP 方法
 import originJsonp from 'jsonp'
 
 export default function jsonp(url, data, option) {
@@ -14,6 +15,7 @@ export default function jsonp(url, data, option) {
   })
 }
 
+// 把传递进来的data传入URL中
 export function param(data) {
   let url = ''
   for (var k in data) {
