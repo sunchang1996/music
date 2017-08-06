@@ -47,9 +47,18 @@ export default {
         this._play()
       }
     }, 20)
+
+    window.addEventListener('resize', () => {
+      if (!this.slider) {
+        return
+      }
+      this._setSliderWidth(true)
+      // better-scroll重新刷新DOM的一个方法
+      this.slider.refresh()
+    })
   },
   methods: {
-    _setSliderWidth() {
+    _setSliderWidth(isResize) {
       // 拿到所有的子元素
       this.children = this.$refs.sliderGroup.children
       let width = 0
@@ -61,7 +70,7 @@ export default {
         child.style.width = sliderWidth + 'px'
         width += sliderWidth
       }
-      if (this.loop) {
+      if (this.loop && !isResize) {
         width += 2 * sliderWidth
       }
       this.$refs.sliderGroup.style.width = width + 'px'
@@ -76,6 +85,7 @@ export default {
         snapLoop: this.loop,
         snapThreshold: 0.3,
         snapSpeed: 400
+        // click: true 会阻止浏览器的click 会自己配发一个 这里的点击事件会冲突 a链接跳转是默认行为 也不需要点击事件
       })
 
       // 给this.slidet 添加一个事件
@@ -86,7 +96,7 @@ export default {
           pageIndex -= 1
         }
         this.currentPageIndex = pageIndex
-
+        // 手动滑动的时候 清除定时器
         if (this.autoPlay) {
           clearTimeout(this.timer)
           this._play()
@@ -94,7 +104,6 @@ export default {
       })
     },
     _initDots() {
-      console.log(this.children.length)
       this.dots = new Array(this.children.length)
     },
     _play() {
