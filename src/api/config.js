@@ -1,8 +1,8 @@
 // 配置参数
 export const commonParams = {
-  g_tk: 1029841435,
+  g_tk: 1928093487,
   inCharset: 'utf-8',
-  outCharset: 'urf-8',
+  outCharset: 'utf-8',
   notice: 0,
   format: 'jsonp'
 }
