@@ -40,3 +40,5 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 ## 
 - 把一些常用的 比较通用的 通常要抽象出来 写在一个js 文件中
+
+- needsclick 在点击的文件中添加 needsclick类名 修复插件的点击事件的冲突 (这里在recommend组件中使用了)
