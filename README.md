@@ -32,6 +32,8 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 - jsonp 跨域
 
+- npm i vue-lazyload --save  安装Vue 懒加载插件 
+
 - better-scroll 
 ## 里面使用的一些方法
 - encodeURIComponent() 函数可把字符串作为 URI 组件进行编码。

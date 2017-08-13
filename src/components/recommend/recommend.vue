@@ -16,7 +16,7 @@
           <ul>
             <li v-for="(item, index) in discList" class="item" :key="index">
               <div class="icon">
-                <img :src="item.imgurl" width="60" height="60">
+                <img v-lazy="item.imgurl" width="60" height="60">
               </div>
               <div class="text">
                 <h2 class="name" v-html="item.creator.name"></h2>
@@ -63,7 +63,7 @@ export default {
       })
     },
     loadImage() { // 防止scroll计算的时候 轮播图组件还没有渲染 出现高度计算错误
-      if (!this.checkLoaded) {
+      if (!this.checkLoaded) { // 只执行一次
         this.$refs.scroll.refresh()
         this.checkLoaded = true
       }
