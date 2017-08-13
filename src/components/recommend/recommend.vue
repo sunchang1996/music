@@ -1,12 +1,12 @@
 <template>
   <div class="recommend">
-    <div class="recommend-content">
+    <scroll ref="scroll" class="recommend-content" :data= 'discList'>
       <div>
         <div v-if="recommends.length" class="slider-wrapper">
           <slider>
-            <div v-for="item in recommends">
+            <div v-for="(item, index) in recommends" :key="index">
               <a :href="item.linkUrl">
-                <img :src="item.picUrl">
+                <img @load="loadImage" :src="item.picUrl">
               </a>
             </div>
           </slider>
@@ -14,7 +14,7 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <ul>
-            <li v-for="item in discList" class="item">
+            <li v-for="(item, index) in discList" class="item" :key="index">
               <div class="icon">
                 <img :src="item.imgurl" width="60" height="60">
               </div>
@@ -26,13 +26,14 @@
           </ul>
         </div>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 <script>
 import Slider from 'base/slider/slider'
 import {getRecommend, getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
+import Scroll from 'base/scroll/scroll'
 export default {
   data () {
     return {
@@ -41,7 +42,9 @@ export default {
     }
   },
   created() {
-    this._getRecommend()
+    setTimeout(() => {
+      this._getRecommend()
+    }, 20)
     this._getDiscList()
   },
   methods: {
@@ -58,10 +61,17 @@ export default {
           this.discList = res.data.list
         }
       })
+    },
+    loadImage() { // 防止scroll计算的时候 轮播图组件还没有渲染 出现高度计算错误
+      if (!this.checkLoaded) {
+        this.$refs.scroll.refresh()
+        this.checkLoaded = true
+      }
     }
   },
   components: {
-    Slider
+    Slider,
+    Scroll
   }
 }
 </script>
