@@ -11,7 +11,7 @@
         </ul>
       </li>
     </ul>
-    <div class="list-shortcut" @touchstart="onShortcutTouchStart">
+    <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent = 'onShortcutTouchMove'>
       <ul>
         <li v-for="(item,index) in shortcutList" class="item" :data-index = "index">{{item}}</li>
       </ul>
@@ -22,12 +22,17 @@
 import Scroll from 'base/scroll/scroll'
 import { getData } from 'common/js/dom'
 
+const ANCHOR_HEIGHT = 18 // 每行元素的高度
+
 export default {
   props: {
     data: {
       type: Array,
       default: []
     }
+  },
+  created() {
+    this.touch = {}
   },
   computed: {
     shortcutList() {
@@ -39,8 +44,20 @@ export default {
   methods: {
     onShortcutTouchStart(e) {
       let anchorIndex = getData(e.target, 'index')
-      console.log(anchorIndex)
-      this.$refs.listview.scrollToElement(this.$refs.listGroup[anchorIndex], 0)
+      let firstTouch = e.touches[0] // 第一次手指的位置
+      this.touch.y1 = firstTouch.pageY
+      this.touch.anchorIndex = anchorIndex // 第一次的index
+      this._scrollTo(anchorIndex)
+    },
+    onShortcutTouchMove(e) {
+      let firstTouch = e.touches[0]
+      this.touch.y2 = firstTouch.pageY
+      let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0 // -> |0 相当于向下取整Math.floor // 在y轴 第一次相对于第二次偏移的元素
+      let anchorIndex = this.touch.anchorIndex + delta // 滚动到某一个的index
+      this._scrollTo(anchorIndex)
+    },
+    _scrollTo(index) {
+      this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
     }
   },
   components: {
