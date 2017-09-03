@@ -96,16 +96,23 @@ export default {
     },
     scrollY(newY) {
       const listHeight = this.listHeight
+      // 当滚动到顶部 newY > 0
+      if (newY > 0) {
+        this.currentIndex = 0
+        return
+      }
+      // 在中间位置
       for (let i = 0; i < listHeight.length; i++) {
         let height1 = listHeight[i]
         let height2 = listHeight[i + 1]
         // 如果落在了 height1 和 height2 之间 落在某一个区间
-        if (!height2 || (-newY > height1 && -newY < height2)) { // -newY意思是取反
+        if (-newY >= height1 && -newY < height2) { // -newY意思是取反
           this.currentIndex = i // 获取当前滚动的哪个index
           return
         }
       }
-      this.currentIndex = 0
+      // 当滚动到底部的时候，且-newY 大于最后一个元素的上限
+      this.currentIndex = listHeight.length - 2
     }
   },
   components: {
