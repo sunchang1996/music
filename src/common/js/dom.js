@@ -14,7 +14,7 @@ export function addClass(el, className) {
   el.className = newClass.join(' ')
 }
 
-export function getData(el, name, val) {
+export function getData(el, name, val) { // 封装获取某个属性值的方法(这里是获取data-name)
   const prefix = 'data-'
   if (val) {
     return el.setAttribute(prefix + name, val)
