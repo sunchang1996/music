@@ -53,7 +53,7 @@ export default {
       let firstTouch = e.touches[0]
       this.touch.y2 = firstTouch.pageY
       let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0 // -> |0 相当于向下取整Math.floor // 在y轴 第一次相对于第二次偏移的元素
-      let anchorIndex = this.touch.anchorIndex + delta // 滚动到某一个的index
+      let anchorIndex = parseInt(this.touch.anchorIndex + delta) // 滚动到某一个的index
       this._scrollTo(anchorIndex)
     },
     _scrollTo(index) {
