@@ -6,7 +6,7 @@
     :probeType = "probeType"
     ref="listview">
     <ul>
-      <li v-for="group in data" class="list-group" ref="listGroup">
+      <li v-for="(group,key) in data" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
           <li v-for="item in group.items" class="list-group-item">
@@ -74,6 +74,9 @@ export default {
       this.scrollY = pos.y
     },
     _scrollTo(index) {
+      if (!index && index !== 0) return
+      this.scrollY = -this.listHeight[index]
+      // scrollToElement 第二个参数的含义是 是否要有动画的时间 滚动动画的时间
       this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
     },
     _calculateHeight() { // 计算高度
