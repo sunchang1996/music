@@ -75,6 +75,11 @@ export default {
     },
     _scrollTo(index) {
       if (!index && index !== 0) return
+      if (index < 0) {
+        index = 0
+      } else if (index > this.listHeight.length - 2) {
+        index = this.listHeight.length - 2
+      }
       this.scrollY = -this.listHeight[index]
       // scrollToElement 第二个参数的含义是 是否要有动画的时间 滚动动画的时间
       this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
