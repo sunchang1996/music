@@ -18,8 +18,12 @@
     </ul>
     <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent = 'onShortcutTouchMove'>
       <ul>
-        <li v-for="(item,index) in shortcutList" class="item" :data-index = "index" :class="{'current': currentIndex === index}">{{item}}</li>
+        <li v-for="(item,index) in shortcutList" class="item" :data-index = "index" :class="{'current': currentIndex === index}">
+          {{item}}</li>
       </ul>
+    </div>
+    <div class="list-fixed" v-show="fixedTitle">
+      <h1 class="fixed-title">{{fixedTitle}}</h1>
     </div>
   </scroll>
 </template>
@@ -53,6 +57,12 @@ export default {
       return this.data.map((group) => {
         return group.title.substr(0, 1)
       })
+    },
+    fixedTitle() {
+      if (this.scrollY > 0) {
+        return
+      }
+      return this.data[this.currentIndex] ? this.data[this.currentIndex].title : null
     }
   },
   methods: {

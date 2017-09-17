@@ -30,6 +30,7 @@
     .tab-item
       flex: 1
       text-align: center
+                                                                
       .tab-link
         padding-bottom: 5px
         color: $color-text-l
