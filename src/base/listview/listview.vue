@@ -22,7 +22,7 @@
           {{item}}</li>
       </ul>
     </div>
-    <div class="list-fixed" v-show="fixedTitle">
+    <div class="list-fixed" ref="fixed" v-show="fixedTitle">
       <h1 class="fixed-title">{{fixedTitle}}</h1>
     </div>
   </scroll>
@@ -32,6 +32,7 @@ import Scroll from 'base/scroll/scroll'
 import { getData } from 'common/js/dom'
 
 const ANCHOR_HEIGHT = 18 // 每行元素的高度
+const TITLE_HEIGHT = 30 // title的高度
 
 export default {
   props: {
@@ -49,7 +50,9 @@ export default {
   data() {
     return {
       scrollY: -1,
-      currentIndex: 0
+      currentIndex: 0,
+      diff: -1,
+      fixedTop: -1
     }
   },
   computed: {
@@ -126,11 +129,24 @@ export default {
         // 如果落在了 height1 和 height2 之间 落在某一个区间
         if (-newY >= height1 && -newY < height2) { // -newY意思是取反
           this.currentIndex = i // 获取当前滚动的哪个index
+          this.diff = height2 + newY
+          // console.log('this.diff', this.diff)
           return
         }
       }
       // 当滚动到底部的时候，且-newY 大于最后一个元素的上限
       this.currentIndex = listHeight.length - 2
+    },
+    diff(newVal) {
+      console.log('newvalSSS', newVal)
+      let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+      if (this.fixedTop === fixedTop) {
+        console.log('this', this.fixedTop)
+        return
+      }
+      this.fixedTop = fixedTop
+      console.log(fixedTop)
+      this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
     }
   },
   components: {
