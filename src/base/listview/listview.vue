@@ -25,11 +25,15 @@
     <div class="list-fixed" ref="fixed" v-show="fixedTitle">
       <h1 class="fixed-title">{{fixedTitle}}</h1>
     </div>
+    <div v-show="!data.length" class = "loading-container">
+      <loading/>
+    </div>
   </scroll>
 </template>
 <script>
 import Scroll from 'base/scroll/scroll'
 import { getData } from 'common/js/dom'
+import Loading from 'base/loading/loading'
 
 const ANCHOR_HEIGHT = 18 // 每行元素的高度
 const TITLE_HEIGHT = 30 // title的高度
@@ -130,7 +134,6 @@ export default {
         if (-newY >= height1 && -newY < height2) { // -newY意思是取反
           this.currentIndex = i // 获取当前滚动的哪个index
           this.diff = height2 + newY
-          // console.log('this.diff', this.diff)
           return
         }
       }
@@ -138,19 +141,19 @@ export default {
       this.currentIndex = listHeight.length - 2
     },
     diff(newVal) {
-      console.log('newvalSSS', newVal)
       let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+      console.log('----- ', fixedTop)
       if (this.fixedTop === fixedTop) {
-        console.log('this', this.fixedTop)
         return
       }
       this.fixedTop = fixedTop
-      console.log(fixedTop)
+      console.log(this.fixedTop)
       this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
     }
   },
   components: {
-    Scroll
+    Scroll,
+    Loading
   }
 }
 </script>
