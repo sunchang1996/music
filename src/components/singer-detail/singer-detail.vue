@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div class="singer-detail">1111111111</div>
+    <div class="singer-detail"></div>
   </transition>
 </template>
 <script>
