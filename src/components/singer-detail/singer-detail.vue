@@ -4,7 +4,16 @@
   </transition>
 </template>
 <script>
+import {mapGetters} from 'vuex' // 取数据
 export default {
+  created() {
+    console.log(this.singer)
+  },
+  computed: {
+    ...mapGetters([
+      'singer'
+    ])
+  }
 }
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">

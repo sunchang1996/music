@@ -3,6 +3,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import fastclick from 'fastclick'
+import store from './store'  // 引入store 数据
 import '@/common/stylus/index.styl'
 import VueLazyLoad from 'vue-lazyload'
 
@@ -14,5 +15,6 @@ Vue.use(VueLazyLoad, {  // 使用懒加载插件
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
