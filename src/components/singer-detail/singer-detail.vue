@@ -4,10 +4,19 @@
   </transition>
 </template>
 <script>
-import {mapGetters} from 'vuex' // 取数据
-import {getSingerDetail} from 'api/singer'
-import {ERR_OK} from 'api/config'
+import { mapGetters } from 'vuex' // 取数据
+import { getSingerDetail } from 'api/singer'
+import { ERR_OK } from 'api/config'
+// import { createSong } from 'common/js/song'
+import {createSong} from 'common/js/song'
+// import {createSong} from '../../common/js/song'
+
 export default {
+  data() {
+    return {
+      songs: []
+    }
+  },
   created() {
     this._getDetail()
   },
@@ -24,9 +33,20 @@ export default {
       }
       getSingerDetail(this.singer.id).then((res) => { // 拿到歌手详情数据
         if (res.code === ERR_OK) {
-          console.log(res.data.list)
+          this.songs = this._normalizeSongs(res.data.list)
+          console.log(this.songs)
         }
       })
+    },
+    _normalizeSongs(list) {
+      let ret = []
+      list.forEach((item) => {
+        let {musicData} = item
+        if (musicData.songid && musicData.albummid) {
+          ret.push(createSong(musicData))
+        }
+      })
+      return ret
     }
   }
 }
