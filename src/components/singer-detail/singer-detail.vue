@@ -10,7 +10,6 @@ import {ERR_OK} from 'api/config'
 export default {
   created() {
     this._getDetail()
-    console.log(this.singer)
   },
   computed: {
     ...mapGetters([
