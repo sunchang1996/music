@@ -5,14 +5,30 @@
 </template>
 <script>
 import {mapGetters} from 'vuex' // 取数据
+import {getSingerDetail} from 'api/singer'
+import {ERR_OK} from 'api/config'
 export default {
   created() {
+    this._getDetail()
     console.log(this.singer)
   },
   computed: {
     ...mapGetters([
       'singer'
     ])
+  },
+  methods: {
+    _getDetail() {
+      if (!this.singer.id) { // 如果没有歌手id 就回到歌手页面 防止在详情页面刷新没有数据
+        this.$router.push('/singer')
+        return
+      }
+      getSingerDetail(this.singer.id).then((res) => { // 拿到歌手详情数据
+        if (res.code === ERR_OK) {
+          console.log(res.data.list)
+        }
+      })
+    }
   }
 }
 </script>
