@@ -9,7 +9,7 @@ import { getSingerList } from 'api/singer'
 import { ERR_OK } from 'api/config'
 import Singer from 'common/js/singer'
 import ListView from 'base/listview/listview'
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 
 const HOT_NAME = '热门'
 const HOT_SINGER_LENG = 10
@@ -23,12 +23,14 @@ export default {
   created() {
     this._getSingerList()
   },
+
   methods: {
     selectSinger(singer) {
       this.$router.push({
         path: `/singer/${singer.id}`
       })
       this.setSinger(singer) // 往vuex 中写入数据
+      // this.$store.commit('SET_SINGER')
     },
     _getSingerList() {
       getSingerList().then((res) => {
@@ -79,8 +81,10 @@ export default {
       })
       return hot.concat(ret)
     },
+
     ...mapMutations({
-      setSinger: 'SET_SINGER'
+      // this.$store.commit('SET_SINGER')
+      setSinger: 'SET_SINGER' // 往 SET_SINGER 存入数据
     })
   },
   components: {
