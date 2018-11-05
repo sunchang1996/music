@@ -4,12 +4,23 @@
       <i class="icon-back"></i>
     </div>
     <h1 class="title" v-html="title"></h1>
-    <div class="bg-image" :style="bgStyle">
+    <div class="bg-image" :style="bgStyle" ref="bgImage">
       <div class="filter"></div>
     </div>
+    <div class="bg-layer" ref="layer"></div>
+    <scroll @scroll="handleScroll" :data="songs" class="list" ref="list" :probe-type="probeType" :listen-scroll="listenScroll">
+      <div class="song-list-wrapper">
+        <song-list :songs="songs"></song-list>
+      </div>
+    </scroll>
   </div>
 </template>
 <script>
+import Scroll from 'base/scroll/scroll'
+import SongList from 'base/song-list/song-list'
+
+const RESERVED_HEIGHT = 40
+
 export default {
   props: {
     bgImage: {
@@ -26,9 +37,45 @@ export default {
     }
   },
 
+  data() {
+    return {
+      scrollY: 0
+    }
+  },
+
+  components: {
+    Scroll,
+    SongList
+  },
+  created() {
+    this.probeType = 3
+    this.listenScroll = true
+  },
+
+  mounted() {
+    // 获取图片的高度
+    this.imageHeight = this.$refs.bgImage.clientHeight
+    this.minTranslateY = -this.imageHeight + RESERVED_HEIGHT
+    // 歌曲列表距离上面的高度
+    this.$refs.list.$el.style.top = `${this.imageHeight}px`
+  },
+
   computed: {
     bgStyle() {
       return `background-image:url(${this.bgImage})`
+    }
+  },
+
+  methods: {
+    handleScroll(pos) {
+      this.scrollY = pos.y
+    }
+  },
+
+  watch: {
+    scrollY(newY) {
+      const translateY = Math.max(this.minTranslateY, newY)
+      this.$refs.layer.style['transform'] = `translate3d(0, ${translateY}px, 0)`
     }
   }
 }
