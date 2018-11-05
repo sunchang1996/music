@@ -74,8 +74,22 @@ export default {
 
   watch: {
     scrollY(newY) {
+      // 通过设置 zIndex 实现背景根据滚动方向滑动
+      let zIndex = 0
       const translateY = Math.max(this.minTranslateY, newY)
       this.$refs.layer.style['transform'] = `translate3d(0, ${translateY}px, 0)`
+      const currentEle = this.$refs.bgImage
+
+      // 但滚动距离小于 minTranslateY 改变背景图片的位置，否则就改变
+      if (newY < this.minTranslateY) {
+        zIndex = 10
+        currentEle.style.paddingTop = 0
+        currentEle.style.height = `${RESERVED_HEIGHT}px`
+      } else {
+        currentEle.style.paddingTop = '70%'
+        currentEle.style.height = 0
+      }
+      currentEle.style.zIndex = zIndex
     }
   }
 }
