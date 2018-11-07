@@ -76,9 +76,16 @@ export default {
     scrollY(newY) {
       // 通过设置 zIndex 实现背景根据滚动方向滑动
       let zIndex = 0
+      let scale = 1
       const translateY = Math.max(this.minTranslateY, newY)
       this.$refs.layer.style['transform'] = `translate3d(0, ${translateY}px, 0)`
+
+      const percent = Math.abs(newY / this.imageHeight)
       const currentEle = this.$refs.bgImage
+      if (newY > 0) {
+        scale = 1 + percent
+        zIndex = 10
+      }
 
       // 但滚动距离小于 minTranslateY 改变背景图片的位置，否则就改变
       if (newY < this.minTranslateY) {
@@ -90,6 +97,7 @@ export default {
         currentEle.style.height = 0
       }
       currentEle.style.zIndex = zIndex
+      currentEle.style['transform'] = `scale(${scale})`
     }
   }
 }
