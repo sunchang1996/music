@@ -10,5 +10,5 @@ export const currentIndex = state => state.currentIndex
 
 // getters 也可以充当计算属性
 export const currentSong = (state) => {
-  return state.playing[state.currentIndex] || {}
+  return state.playlist[state.currentIndex] || {}
 }
