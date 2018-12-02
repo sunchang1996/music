@@ -21,7 +21,7 @@
         <div class="middle">
           <div class="middle-l" ref="middleL">
             <div class="cd-wrapper" ref="cdWrapper">
-              <div class="cd">
+              <div class="cd" :class="cdCls">
                 <img class="image" :src="currentSong.image">
               </div>
             </div>
@@ -36,7 +36,7 @@
               <i class="icon-prev"></i>
             </div>
             <div class="icon i-center">
-              <i class="icon-play"></i>
+              <i @click.stop="togglePlaying" class="icon-play"></i>
             </div>
             <div class="icon i-right">
               <i  class="icon-next"></i>
@@ -51,7 +51,7 @@
 
     <transition name="slide-mini">
       <div class="mini-player" v-show="!fullScreen" @click="onClickOpen">
-        <div class="icon">
+        <div class="icon" :class="cdCls">
           <img width="40" height="40" :src="currentSong.image">
         </div>
         <div class="text">
@@ -59,15 +59,19 @@
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
         <div class="control">
-          <!-- <progress-circle :radius="radius" :percent="percent">
+          <!-- <progress-circle :radius="radius" :percent="percent"> -->
             <i @click.stop="togglePlaying" class="icon-mini" :class="miniIcon"></i>
-          </progress-circle> -->
+          <!-- </progress-circle> -->
         </div>
         <div class="control">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+
+    <!-- <audio ref="audio" :src="currentSong.url"></audio> -->
+    <audio ref="audio" src="../../../static/audio/薛之谦-违背的青春.mp3"></audio>
+    <!-- <img src="./mix-line-bar.png" alt=""> -->
   </div>
 </template>
 
@@ -85,8 +89,15 @@ export default {
     ...mapGetters([
       'fullScreen',
       'playlist',
-      'currentSong'
-    ])
+      'currentSong',
+      'playing'
+    ]),
+    cdCls() {
+      return this.playing ? 'play' : 'play pause'
+    },
+    miniIcon() {
+      return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+    }
   },
 
   methods: {
@@ -95,7 +106,8 @@ export default {
     },
     // 修改 mutations 中定义的属性
     ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN'
+      setFullScreen: 'SET_FULL_SCREEN',
+      setPlayingState: 'SET_PLAYING_STATE'
     }),
 
     onClickOpen() {
@@ -161,6 +173,23 @@ export default {
         y,
         scale
       }
+    },
+    togglePlaying() {
+      this.setPlayingState(!this.playing)
+    }
+  },
+
+  watch: {
+    currentSong() {
+      this.$nextTick(() => {
+        this.$refs.audio.play()
+      })
+    },
+    playing(newPlaying) {
+      const audio = this.$refs.audio
+      this.$nextTick(() => {
+        newPlaying ? audio.play() : audio.pause()
+      })
     }
   }
 }
